@@ -1,0 +1,45 @@
+version: "3.1"
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: db
+    restart: always
+    working_dir: /application/src
+    volumes:
+      - ./database/files:/var/lib/mysql
+      - ./database/conf:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mdc_voos
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    ports:
+      - "3306:3306"
+    networks:
+      project_net:
+        ipv4_address: 172.29.1.1
+
+  apache:
+    build: phpdocker
+    container_name: php
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    networks:
+      project_net:
+        ipv4_address: 172.29.1.2
+      
+networks:
+  project_net:
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.29.0.0/16
+      

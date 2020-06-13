@@ -1,0 +1,20 @@
+h1, h2, h3, h4, h5, h6 {
+    font-weight:300;
+}
+
+.modal.large {
+    width:75%;
+}
+
+fieldset {
+    border-color:#ffcdd2;
+}
+
+fieldset legend {
+    padding: 0px 10px 0px 10px;
+    color:#ee6e73;
+}
+
+td {
+    padding: 5px 5px;
+}
