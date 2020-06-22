@@ -3,9 +3,9 @@
 require_once "../autenticacao.php";
 require_once "../database.php";
 
-$sth = $pdo->prepare("SELECT * from aeronaves where ativo = 1 order by id desc");
+$sth = $pdo->prepare("SELECT * from fornecedores where ativo = 1 order by id desc");
 $sth->execute();
-$aeronaves = $sth->fetchAll();
+$fornecedores = $sth->fetchAll();
 
 ?>
 
@@ -28,9 +28,9 @@ $aeronaves = $sth->fetchAll();
                     <li><a href="../index.php">Home</a></li>
                     <li><a href="../pilotos/index.php">Pilotos</a></li>
                     <li><a href="../pistas/index.php">Pistas</a></li>
-                    <li class="active"><a href="index.php">Aeronaves</a></li>
+                    <li><a href="../aeronaves/index.php">Aeronaves</a></li>
                     <li><a href="../voos/index.php">Voos</a></li>
-					<li><a href="../fornecedores/index.php">Fornecedores</a></li>
+					<li class="active"><a href="index.php">Fornecedores</a></li>
                 </ul>
             </div>
 		</div>
@@ -40,28 +40,28 @@ $aeronaves = $sth->fetchAll();
         <li><a href="../index.php">Home</a></li>
         <li><a href="../pilotos/index.php">Pilotos</a></li>
         <li><a href="../pistas/index.php">Pistas</a></li>
-        <li class="active"><a href="index.php">Aeronaves</a></li>
+        <li><a href="../aeronaves/index.php">Aeronaves</a></li>
         <li><a href="../voos/index.php">Voos</a></li>
-		<li><a href="../fornecedores/index.php">Fornecedores</a></li>
+		<li class="active"><a href="index.php">Fornecedores</a></li>
     </ul>
 
 	<main>
 		<div class="container">
 			<div class="row">
 				<div class="col m12">
-					<h4 class="header">Aeronaves</h4>
+					<h4 class="header">Fornecedores</h4>
 				</div>
 			</div>
 
 			<?php if(!empty($_GET['status']) && $_GET['status'] == 'salvo'): ?>
 				<div id="page-warning" class="hide">
-					<span>Aeronave salva com sucesso <i class="right material-icons green-text">check</i></span>
+					<span>Fornecedor salvo com sucesso <i class="right material-icons green-text">check</i></span>
 				</div>
 			<?php endif; ?>
 
 			<?php if(!empty($_GET['status']) && $_GET['status'] == 'excluido'): ?>
 				<div id="page-warning" class="hide">
-					<span>Aeronave inativada com sucesso <i class="right material-icons green-text">check</i></span>
+					<span>Fornecedor inativado com sucesso <i class="right material-icons green-text">check</i></span>
 				</div>
 			<?php endif; ?>     
 
@@ -70,14 +70,14 @@ $aeronaves = $sth->fetchAll();
 					<table class="highlight">
 						<thead>
 							<tr>
-								<th>Aeronave</th>
+								<th>Fornecedor</th>
 								<th width="10%">
 									<a class="waves-effect waves-light btn-floating btn-small modal-trigger green" href="#modal-novo"><i class="material-icons">add</i></a>
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach($aeronaves as $item): ?>
+							<?php foreach($fornecedores as $item): ?>
 								<tr>
 									<td><?=$item['nome']?></td>
 									<td>
@@ -104,7 +104,7 @@ $aeronaves = $sth->fetchAll();
 				<div class="row">
 					<div class="input-field col s12">
 						<input id="nome" name="nome" type="text" class="validate">
-						<label for="nome">Aeronave</label>
+						<label for="nome">Fornecedores</label>
 					</div>
 				</div>
 			</div>
@@ -125,7 +125,7 @@ $aeronaves = $sth->fetchAll();
 				<div class="row">
 					<div class="input-field col s12">
 						<input id="nome-edicao" name="nome" type="text" class="validate">
-						<label for="nome-edicao">Aeronave</label>
+						<label for="nome-edicao">Fornecedores</label>
 					</div>
 				</div>
 			</div>
@@ -165,7 +165,7 @@ $aeronaves = $sth->fetchAll();
 </body>
 
 <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
-<script type="text/javascript" src="aeronaves.js"></script>
+<script type="text/javascript" src="fornecedores.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	M.AutoInit();

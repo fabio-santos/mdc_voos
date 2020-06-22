@@ -94,7 +94,6 @@ let page = (function() {
                     document.getElementById("decolagem-edicao").value = data.decolagem;
                     document.getElementById("pouso-edicao").value = data.pouso;
                     document.getElementById("corte-edicao").value = data.corte;
-                    document.getElementById("kmh-edicao").value = data.kmh;
                     document.getElementById("combustivel_decolagem-edicao").value = data.combustivel_decolagem;
                     document.getElementById("combustivel_pouso-edicao").value = data.combustivel_pouso;
                     document.getElementById("combustivel_consumido-edicao").value = data.combustivel_consumido;
@@ -112,6 +111,10 @@ let page = (function() {
                     document.getElementById("oil_temp-edicao").value = data.oil_temp;
                     document.getElementById("fueld_flow-edicao").value = data.fueld_flow;
                     document.getElementById("oat-edicao").value = data.oat;
+                    document.getElementById("carga_transportada-edicao").value = data.carga_transportada;
+                    document.getElementById("combustivel_abastecido-edicao").value = data.combustivel_abastecido;
+                    document.getElementById("ce-edicao").value = data.ce;
+                    document.getElementById("fornecedor-edicao").value = data.fornecedor;
 
                     let modal = document.getElementById('modal-edicao');
 
@@ -189,16 +192,6 @@ let page = (function() {
 
                 setTimeMask(diff, "taxi");
             }
-
-            if(corte && pouso) {
-                let diff = calculateTimeDiff(corte, pouso);
-                if(diff <= 0) {
-                    M.toast({ html: "Reveja os valores informados em corte e pouso" });
-                    return;
-                }
-
-                setTimeMask(diff, "tempo_voo_cp");
-            }
         };
 
         let calculateEditTime = function() {
@@ -236,16 +229,6 @@ let page = (function() {
                 }
 
                 setTimeMask(diff, "taxi-edicao");
-            }
-
-            if(corte && pouso) {
-                let diff = calculateTimeDiff(corte, pouso);
-                if(diff <= 0) {
-                    M.toast({ html: "Reveja os valores informados em corte e pouso" });
-                    return;
-                }
-
-                setTimeMask(diff, "tempo_voo_cp-edicao");
             }
         };
 
@@ -295,16 +278,6 @@ let page = (function() {
             }
 
             setTimeMask(diff, "taxi-edicao");
-        }
-
-        if(corte && pouso) {
-            let diff = calculateTimeDiff(corte, pouso);
-            if(diff <= 0) {
-                M.toast({ html: "Reveja os valores informados em corte e pouso" });
-                return;
-            }
-
-            setTimeMask(diff, "tempo_voo_cp-edicao");
         }
     }
 

@@ -19,6 +19,10 @@ $sth = $pdo->prepare("SELECT * from pistas where ativo = 1 order by id desc");
 $sth->execute();
 $pistas = $sth->fetchAll();
 
+$sth = $pdo->prepare("SELECT * from fornecedores where ativo = 1 order by id desc");
+$sth->execute();
+$fornecedores = $sth->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +46,7 @@ $pistas = $sth->fetchAll();
                     <li><a href="../pistas/index.php">Pistas</a></li>
                     <li><a href="../aeronaves/index.php">Aeronaves</a></li>
                     <li class="active"><a href="index.php">Voos</a></li>
+					<li><a href="../fornecedores/index.php">Fornecedores</a></li>
                 </ul>
             </div>
 		</div>
@@ -53,6 +58,7 @@ $pistas = $sth->fetchAll();
         <li><a href="../pistas/index.php">Pistas</a></li>
         <li><a href="../aeronaves/index.php">Aeronaves</a></li>
         <li class="active"><a href="index.php">Voos</a></li>
+		<li><a href="../fornecedores/index.php">Fornecedores</a></li>
     </ul>
 
 	<main>
@@ -213,10 +219,6 @@ $pistas = $sth->fetchAll();
 						<label for="acionamento">Acionamento</label>
 					</div>
 					<div class="input-field col m3">
-						<input id="corte" name="corte" type="text" class="validate time time_inclusao">
-						<label for="corte">Corte</label>
-					</div>
-					<div class="input-field col m3">
 						<input id="decolagem" name="decolagem" type="text" class="validate time time_inclusao">
 						<label for="decolagem">Decolagem</label>
 					</div>
@@ -224,21 +226,29 @@ $pistas = $sth->fetchAll();
 						<input id="pouso" name="pouso" type="text" class="validate time time_inclusao">
 						<label for="pouso">Pouso</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m3">
+						<input id="corte" name="corte" type="text" class="validate time time_inclusao">
+						<label for="corte">Corte</label>
+					</div>
+					<div class="input-field col m4">
 						<input readonly id="tempo_voo_ca" name="tempo_voo_ca" type="text">
 						<label for="tempo_voo_ca">Tempo acionado (corte-acionamento)</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m4">
 						<input readonly id="tempo_voo_pd" name="tempo_voo_pd" type="text">
 						<label for="tempo_voo_pd">Tempo de voo (pouso-decolagem)</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m4">
 						<input readonly id="taxi" name="taxi" type="text">
 						<label for="taxi">Taxi (decolagem-acionamento)</label>
 					</div>
-					<div class="input-field col m6">
-						<input readonly id="tempo_voo_cp" name="tempo_voo_cp" type="text">
-						<label for="tempo_voo_cp">Tempo de voo (corte-pouso)</label>
+				</fieldset>
+
+				<fieldset class="row">
+					<legend>Peso (Kilos)</legend>
+					<div class="input-field col m3">
+						<input id="carga_transportada" name="carga_transportada" type="text" class="validate decimal">
+						<label for="carga_transportada">Carga Transportada</label>
 					</div>
 				</fieldset>
 
@@ -256,13 +266,34 @@ $pistas = $sth->fetchAll();
 						<input id="combustivel_consumido" name="combustivel_consumido" type="number" class="validate">
 						<label for="combustivel_consumido">Consumido</label>
 					</div>
+					<div class="input-field col m3">
+						<input id="combustivel_abastecido" name="combustivel_abastecido" type="number" class="validate">
+						<label for="combustivel_abastecido">Abastecido</label>
+					</div>
+					<div class="input-field col m3">
+						<input id="ce" name="ce" type="number" class="validate">
+						<label for="ce">Numero da CE</label>
+					</div>
+					<div class="input-field col m3">
+						<select id="fornecedor" name="fornecedor">
+							<option value="0" selected>-- Selecione --</option>
+							<?php foreach($fornecedores as $item): ?>
+								<option value="<?=$item['id']?>"><?=$item['nome']?></option>
+							<?php endforeach; ?>
+						</select>
+						<label for="fornecedor">Fornecedor</label>
+					</div>
 				</fieldset>
 
 				<fieldset class="row">
-					<legend>Rota</legend>
+					<legend>Parâmetros</legend>
 					<div class="input-field col m3">
-						<input id="kmh" name="kmh" type="text" class="validate decimal">
-						<label for="kmh">KM/H</label>
+						<input id="ias" name="ias" type="number" class="validate">
+						<label for="ias">IAS</label>
+					</div>
+					<div class="input-field col m3">
+						<input id="tas" name="tas" type="number" class="validate">
+						<label for="tas">TAS</label>
 					</div>
 					<div class="input-field col m3">
 						<input id="gs" name="gs" type="number" class="validate">
@@ -272,10 +303,10 @@ $pistas = $sth->fetchAll();
 						<input readonly id="fl" name="fl" type="text">
 						<label class="active" for="fl">FL</label>
 					</div>
-				</fieldset>
-
-				<fieldset class="row">
-					<legend>Parâmetros</legend>
+					<div class="input-field col m3">
+						<input id="n1" name="n1" type="text" class="validate decimal">
+						<label for="n1">N1</label>
+					</div>
 					<div class="input-field col m3">
 						<input id="egt" name="egt" type="number" class="validate">
 						<label for="egt">EGT</label>
@@ -307,18 +338,6 @@ $pistas = $sth->fetchAll();
 					<div class="input-field col m3">
 						<input id="oil_temp" name="oil_temp" type="number" class="validate">
 						<label for="oil_temp">Oil Temp</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="ias" name="ias" type="number" class="validate">
-						<label for="ias">IAS</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="tas" name="tas" type="number" class="validate">
-						<label for="tas">TAS</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="n1" name="n1" type="text" class="validate decimal">
-						<label for="n1">N1</label>
 					</div>
 					<div class="input-field col m3">
 						<input id="fueld_flow" name="fueld_flow" type="number" class="validate">
@@ -439,10 +458,6 @@ $pistas = $sth->fetchAll();
 						<label class="active" for="acionamento">Acionamento</label>
 					</div>
 					<div class="input-field col m3">
-						<input id="corte-edicao" name="corte" type="text" class="validate time time_alteracao">
-						<label class="active" for="corte">Corte</label>
-					</div>
-					<div class="input-field col m3">
 						<input id="decolagem-edicao" name="decolagem" type="text" class="validate time time_alteracao">
 						<label class="active" for="decolagem">Decolagem</label>
 					</div>
@@ -450,21 +465,29 @@ $pistas = $sth->fetchAll();
 						<input id="pouso-edicao" name="pouso" type="text" class="validate time time_alteracao">
 						<label class="active" for="pouso">Pouso</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m3">
+						<input id="corte-edicao" name="corte" type="text" class="validate time time_alteracao">
+						<label class="active" for="corte">Corte</label>
+					</div>
+					<div class="input-field col m4">
 						<input readonly id="tempo_voo_ca-edicao" name="tempo_voo_ca" type="text">
 						<label class="active" for="tempo_voo_ca">Tempo acionado (corte-acionamento)</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m4">
 						<input readonly id="tempo_voo_pd-edicao" name="tempo_voo_pd" type="text">
 						<label class="active" for="tempo_voo_pd">Tempo de voo (pouso-decolagem)</label>
 					</div>
-					<div class="input-field col m6">
+					<div class="input-field col m4">
 						<input readonly id="taxi-edicao" name="taxi" type="text">
 						<label class="active" for="taxi">Taxi (decolagem-acionamento)</label>
 					</div>
-					<div class="input-field col m6">
-						<input readonly id="tempo_voo_cp-edicao" name="tempo_voo_cp" type="text">
-						<label class="active" for="tempo_voo_cp">Tempo de voo (corte-pouso)</label>
+				</fieldset>
+
+				<fieldset class="row">
+					<legend>Peso (Kilos)</legend>
+					<div class="input-field col m3">
+						<input id="carga_transportada-edicao" name="carga_transportada" type="text" class="validate decimal">
+						<label for="carga_transportada">Carga Transportada</label>
 					</div>
 				</fieldset>
 
@@ -482,13 +505,34 @@ $pistas = $sth->fetchAll();
 						<input id="combustivel_consumido-edicao" name="combustivel_consumido" type="number" class="validate">
 						<label class="active" for="combustivel_consumido">Consumido</label>
 					</div>
+					<div class="input-field col m3">
+						<input id="combustivel_abastecido-edicao" name="combustivel_abastecido" type="number" class="validate">
+						<label for="combustivel_abastecido">Abastecido</label>
+					</div>
+					<div class="input-field col m3">
+						<input id="ce-edicao" name="ce" type="number" class="validate">
+						<label for="ce">Numero da CE</label>
+					</div>
+					<div class="input-field col m3">
+						<select id="fornecedor-edicao" name="fornecedor">
+							<option value="0">-- Selecione --</option>
+							<?php foreach($fornecedores as $item): ?>
+								<option value="<?=$item['id']?>"><?=$item['nome']?></option>
+							<?php endforeach; ?>
+						</select>
+						<label class="select-label" for="fornecedor">Fornecedor</label>
+					</div>
 				</fieldset>
 
 				<fieldset class="row">
-					<legend>Rota</legend>
+					<legend>Parâmetros</legend>
 					<div class="input-field col m3">
-						<input id="kmh-edicao" name="kmh" type="text" class="validate decimal">
-						<label class="active" for="kmh">KM/H</label>
+						<input id="ias-edicao" name="ias" type="number" class="validate">
+						<label class="active" for="ias">IAS</label>
+					</div>
+					<div class="input-field col m3">
+						<input id="tas-edicao" name="tas" type="number" class="validate">
+						<label class="active" for="tas">TAS</label>
 					</div>
 					<div class="input-field col m3">
 						<input id="gs-edicao" name="gs" type="number" class="validate">
@@ -498,10 +542,10 @@ $pistas = $sth->fetchAll();
 						<input readonly id="fl-edicao" name="fl" type="text" class="validate">
 						<label class="active" for="fl">FL</label>
 					</div>
-				</fieldset>
-
-				<fieldset class="row">
-					<legend>Parâmetros</legend>
+					<div class="input-field col m3">
+						<input id="n1-edicao" name="n1" type="text" class="validate decimal">
+						<label class="active" for="n1">N1</label>
+					</div>
 					<div class="input-field col m3">
 						<input id="egt-edicao" name="egt" type="number" class="validate">
 						<label class="active" for="egt">EGT</label>
@@ -533,18 +577,6 @@ $pistas = $sth->fetchAll();
 					<div class="input-field col m3">
 						<input id="oil_temp-edicao" name="oil_temp" type="number" class="validate">
 						<label class="active" for="oil_temp">Oil Temp</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="ias-edicao" name="ias" type="number" class="validate">
-						<label class="active" for="ias">IAS</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="tas-edicao" name="tas" type="number" class="validate">
-						<label class="active" for="tas">TAS</label>
-					</div>
-					<div class="input-field col m3">
-						<input id="n1-edicao" name="n1" type="text" class="validate decimal">
-						<label class="active" for="n1">N1</label>
 					</div>
 					<div class="input-field col m3">
 						<input id="fueld_flow-edicao" name="fueld_flow" type="number" class="validate">

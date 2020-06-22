@@ -30,6 +30,7 @@ $pilotos = $sth->fetchAll();
                     <li><a href="../pistas/index.php">Pistas</a></li>
                     <li><a href="../aeronaves/index.php">Aeronaves</a></li>
                     <li><a href="../voos/index.php">Voos</a></li>
+					<li><a href="../fornecedores/index.php">Fornecedores</a></li>
                 </ul>
             </div>
 		</div>
@@ -41,6 +42,7 @@ $pilotos = $sth->fetchAll();
         <li><a href="../pistas/index.php">Pistas</a></li>
         <li><a href="../aeronaves/index.php">Aeronaves</a></li>
         <li><a href="../voos/index.php">Voos</a></li>
+		<li><a href="../fornecedores/index.php">Fornecedores</a></li>
     </ul>
 
 	<main>
